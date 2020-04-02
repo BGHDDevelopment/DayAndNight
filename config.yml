@@ -1,0 +1,12 @@
+#Made by BGHDNetwork(Noodles)
+#=======================================================
+#Plugin Page: https://www.spigotmc.org/resources/45988
+#=======================================================
+Update:
+  Enabled: true
+#dayandnight.update
+#Enables if there is a message on-join when the plugin is outdated. 
+#=======================================================
+#Plugin Commands:
+# /day - dayandnight.day
+# /night - dayandnight.night
