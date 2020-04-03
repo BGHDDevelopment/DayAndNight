@@ -1,14 +1,14 @@
-package me.noodles.dayandnight.requested;
+package me.noodles.dayandnight;
 import java.net.*;
 import java.io.*;
 
 public class UpdateChecker
 {
-    public MainDayNight plugin;
+    public DayAndNight plugin;
     public String version;
     
     
-    public UpdateChecker(MainDayNight  plugin) {
+    public UpdateChecker(DayAndNight plugin) {
         this.plugin = plugin;
         this.version = this.getLatestVersion();
     }

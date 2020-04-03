@@ -1,9 +1,0 @@
-name: DayAndNight
-main: me.noodles.dayandnight.requested.MainDayNight
-version: 0.2
-author: BGHDNetwork
-commands:
-   day:
-     description: Sets Time To Day
-   night:
-     description: Sets Time To Night
