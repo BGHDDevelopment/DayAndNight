@@ -1,4 +1,4 @@
-package me.noodles.dayandnight.requested;
+package me.noodles.dayandnight;
 
 import org.bukkit.plugin.java.*;
 import org.bukkit.event.*;
@@ -8,9 +8,9 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class MainDayNight extends JavaPlugin implements Listener
+public class DayAndNight extends JavaPlugin implements Listener
 {
-    public static MainDayNight plugin;
+    public static DayAndNight plugin;
     public static Plugin plugin2;
     private UpdateChecker checker;
     String DownloaderType;
@@ -18,7 +18,7 @@ public class MainDayNight extends JavaPlugin implements Listener
     String SpigotHost;
     
     public void onEnable() {
-        MainDayNight.plugin = this;
+        DayAndNight.plugin = this;
         final PluginDescriptionFile VarUtilType = this.getDescription();
         this.getLogger().info("DayAndNight V" + VarUtilType.getVersion() + " starting...");
         this.saveDefaultConfig();
@@ -34,7 +34,7 @@ public class MainDayNight extends JavaPlugin implements Listener
                 getServer().getConsoleSender().sendMessage("------------------------");
                 getServer().getConsoleSender().sendMessage("DayAndNight is outdated!");
                 getServer().getConsoleSender().sendMessage("Newest version: " + this.checker.getLatestVersion());
-                getServer().getConsoleSender().sendMessage("Your version: " + MainDayNight.plugin.getDescription().getVersion());
+                getServer().getConsoleSender().sendMessage("Your version: " + DayAndNight.plugin.getDescription().getVersion());
                 getServer().getConsoleSender().sendMessage("Please Update Here: https://www.spigotmc.org/resources/45988");
                 getServer().getConsoleSender().sendMessage("------------------------");
             }
@@ -52,12 +52,12 @@ public class MainDayNight extends JavaPlugin implements Listener
     }
     
     @SuppressWarnings({ "unchecked", "rawtypes"})
-	public static MainDayNight getPlugin() {
-        return (MainDayNight)getPlugin((Class)MainDayNight.class);
+	public static DayAndNight getPlugin() {
+        return (DayAndNight)getPlugin((Class) DayAndNight.class);
     }
     
     public static Plugin getPlugin2() {
-        return (Plugin)MainDayNight.plugin;
+        return (Plugin) DayAndNight.plugin;
     }
     
     public boolean onCommand(final CommandSender sender, final Command cmd, final String label, final String[] args) {
