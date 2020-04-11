@@ -1,86 +1,57 @@
 package me.noodles.dayandnight;
 
-import org.bukkit.plugin.java.*;
-import org.bukkit.event.*;
-import org.bukkit.plugin.*;
-import org.bukkit.*;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
+import me.noodles.dayandnight.commands.DayCommand;
+import me.noodles.dayandnight.commands.NightCommand;
+import me.noodles.dayandnight.listeners.UpdateJoinEvent;
+import me.noodles.dayandnight.utilities.UpdateChecker;
+import org.bukkit.Bukkit;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.event.Listener;
+import org.bukkit.plugin.java.JavaPlugin;
 
-public class DayAndNight extends JavaPlugin implements Listener
-{
-    public static DayAndNight plugin;
-    public static Plugin plugin2;
-    private UpdateChecker checker;
-    String DownloaderType;
-    String GsonEntry;
-    String SpigotHost;
-    
+public class DayAndNight extends JavaPlugin {
+
     public void onEnable() {
-        DayAndNight.plugin = this;
-        final PluginDescriptionFile VarUtilType = this.getDescription();
-        this.getLogger().info("DayAndNight V" + VarUtilType.getVersion() + " starting...");
+        final String version = this.getDescription().getVersion();
+
+        this.getLogger().info(String.format("DayAndNight v%s starting ...", version));
+
         this.saveDefaultConfig();
         this.reloadConfig();
-        registerEvents((Plugin)this, new UpdateJoinEvent());
-        registerEvents(this, this);
-        this.getLogger().info("DayAndNight V" + VarUtilType.getVersion() + " started!");
-        this.setEnabled(true);
-        this.getLogger().info("DayAndNight V" + VarUtilType.getVersion() + " checking for updates...");
-        this.checker = new UpdateChecker(this);
-        if (this.checker.isConnected()) {
-            if (this.checker.hasUpdate()) {
-                getServer().getConsoleSender().sendMessage("------------------------");
-                getServer().getConsoleSender().sendMessage("DayAndNight is outdated!");
-                getServer().getConsoleSender().sendMessage("Newest version: " + this.checker.getLatestVersion());
-                getServer().getConsoleSender().sendMessage("Your version: " + DayAndNight.plugin.getDescription().getVersion());
-                getServer().getConsoleSender().sendMessage("Please Update Here: https://www.spigotmc.org/resources/45988");
-                getServer().getConsoleSender().sendMessage("------------------------");
-            }
-            else {
-                getServer().getConsoleSender().sendMessage("------------------------");
-                getServer().getConsoleSender().sendMessage("DayAndNight is up to date!");
-                getServer().getConsoleSender().sendMessage("------------------------");            }
+
+        this.getLogger().info(String.format("DayAndNight v%s loading commands ...", version));
+
+        this.registerCommand("night", new NightCommand());
+        this.registerCommand("day", new DayCommand());
+
+        this.getLogger().info(String.format("DayAndNight v%s loading events ...", version));
+
+        this.registerEvents(this, new UpdateJoinEvent(this));
+
+        this.getLogger().info(String.format("DayAndNight v%s started ...", version));
+
+        if (getConfig().getBoolean("CheckForUpdates.Enabled", true)) {
+            new UpdateChecker(this, 45988).getLatestVersion(remoteVersion -> {
+                getLogger().info("Checking for Updates ...");
+
+                if (getDescription().getVersion().equalsIgnoreCase(remoteVersion)) {
+                    getLogger().info("No new version available");
+                } else {
+                    getLogger().warning(String.format("Newest version: %s is out! You are running version: %s", remoteVersion, getDescription().getVersion()));
+                    getLogger().warning("Please Update Here: http://www.spigotmc.org/resources/45988");
+                }
+            });
         }
     }
-    
-    public static void registerEvents(final Plugin plugin, final Listener... listeners) {
+
+    private void registerCommand(final String command, final CommandExecutor executor) {
+        this.getCommand(command).setExecutor(executor);
+    }
+
+    private void registerEvents(final JavaPlugin plugin, final Listener... listeners) {
         for (final Listener listener : listeners) {
             Bukkit.getServer().getPluginManager().registerEvents(listener, plugin);
         }
     }
-    
-    @SuppressWarnings({ "unchecked", "rawtypes"})
-	public static DayAndNight getPlugin() {
-        return (DayAndNight)getPlugin((Class) DayAndNight.class);
-    }
-    
-    public static Plugin getPlugin2() {
-        return (Plugin) DayAndNight.plugin;
-    }
-    
-    public boolean onCommand(final CommandSender sender, final Command cmd, final String label, final String[] args) {
-        final Player p = (Player)sender;
-        if (cmd.getName().equalsIgnoreCase("day")) {
-            if (p.hasPermission("dayandnight.day")) {
-                p.getWorld().setTime(0L);
-                p.sendMessage(ChatColor.GREEN + "Time set to Day!");
-            }
-            else {
-                p.sendMessage(ChatColor.RED + "You don't have permssion to use this command!");
-            }
-        }
-        if (cmd.getName().equalsIgnoreCase("night")) {
-            if (p.hasPermission("dayandnight.night")) {
-                p.getWorld().setTime(13000L);
-                p.sendMessage(ChatColor.GREEN + "Time set to Night!");
-            }
-            else {
-            	p.sendMessage(ChatColor.RED + "You don't have permssion to use this command!");
-            }
-        }
-		return true;
-    }
-    
+
 }
