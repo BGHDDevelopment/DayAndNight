@@ -1,10 +1,5 @@
 name: DayAndNight
-version: ${project.version}
-main: me.noodles.dayandnight.DayAndNight
-authors: [BGHDDevelopment]
+version: 0.3
+main: com.bghddevelopment.daynight.DayAndNight
+author: BGHDDevelopmentLLC
 website: https://bghddevelopment.com/
-commands:
-  day:
-    description: Sets Time To Day
-  night:
-    description: Sets Time To Night
